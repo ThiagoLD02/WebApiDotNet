@@ -12,5 +12,7 @@ namespace WebApplicationExercise.Repositories.Orders
         Task<Order> SaveOrderAsync(OrderDTO orderDTO);
 
         Task<List<Order>> GetOrdersByCustomerIDAsync(short id);
+        
+        Task<List<OrderCustomerNameDTO>> GetOrdersWithCustomerName();
     }
 }

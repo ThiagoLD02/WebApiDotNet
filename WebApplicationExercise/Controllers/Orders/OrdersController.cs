@@ -6,7 +6,7 @@ using WebApplicationExercise.Requests.Orders;
 namespace WebApplicationExercise.Controllers.Orders
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class OrdersController : ControllerBase
     {
 
@@ -19,24 +19,27 @@ namespace WebApplicationExercise.Controllers.Orders
 
 
         [HttpGet]
-        [Route("")]
         public async Task<IActionResult> GetOrders()
         {
             return Ok(await _mediator.Send(new GetOrdersRequest { }));
         }
 
-        [HttpPost]
-        [Route("")]
-        public async Task<IActionResult> SaveOrder(OrderDTO orderDTO)
-        {
-            return Created("", await _mediator.Send(new SaveOrderRequest { OrderDTO = orderDTO }));
-        }
-
-        [HttpGet]
-        [Route("/CustomerID/{id}")]
+        [HttpGet("CustomerID/{id}")]
         public async Task<IActionResult> GetOrdersByCustomerID(short id)
         {
             return Ok(await _mediator.Send(new GetOrdersByCustomerIDRequest { Id = id }));
+        }
+
+        [HttpGet("With-user-name")]
+        public async Task<IActionResult> GetOrdersWithCustomerName()
+        {
+            return Ok(await _mediator.Send(new GetOrdersWithCustomerNameRequest { }));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SaveOrder(OrderDTO orderDTO)
+        {
+            return Created("", await _mediator.Send(new SaveOrderRequest { OrderDTO = orderDTO }));
         }
     }
 }
