@@ -14,5 +14,7 @@ namespace WebApplicationExercise.Repositories.Orders
         Task<List<Order>> GetOrdersByCustomerIDAsync(short id);
         
         Task<List<OrderCustomerNameDTO>> GetOrdersWithCustomerName();
+        
+        Task<List<OrderCustomerNameDTO>> GetOrdersWithQuantityGraterThan(int quantity);
     }
 }

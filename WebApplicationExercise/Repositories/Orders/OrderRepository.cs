@@ -61,6 +61,16 @@ namespace WebApplicationExercise.Repositories.Orders
             return orders;
         }
 
+        public async Task<List<OrderCustomerNameDTO>>  GetOrdersWithQuantityGraterThan(int quantity)
+        {
+            using var dbConnection = _dbSession.Connection;
+            var query =
+                @"SELECT o.ID, o.Quantity, o.ProductName, c.Name AS CustomerName  FROM Orders o " +
+                "INNER JOIN Customers c ON  o.CustomerID = c.ID " +
+                "WHERE o.Quantity > @Quantity";
+            return (await dbConnection.QueryAsync<OrderCustomerNameDTO>(query, new { Quantity = quantity })).ToList();
+        }
+
 
     }
 }

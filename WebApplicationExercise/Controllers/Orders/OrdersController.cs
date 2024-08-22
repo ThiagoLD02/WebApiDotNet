@@ -36,6 +36,12 @@ namespace WebApplicationExercise.Controllers.Orders
             return Ok(await _mediator.Send(new GetOrdersWithCustomerNameRequest { }));
         }
 
+        [HttpGet("Quantity-grater-than/{quantity}")]
+        public async Task<IActionResult> GetOrdersWithQuantityGraterThan(int quantity)
+        {
+            return Ok(await _mediator.Send(new GetOrdersWithQuantityGraterThanRequest {Quantity = quantity }));
+        }
+
         [HttpPost]
         public async Task<IActionResult> SaveOrder(OrderDTO orderDTO)
         {
