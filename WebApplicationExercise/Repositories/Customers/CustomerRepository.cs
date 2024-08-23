@@ -12,9 +12,12 @@ namespace WebApplicationExercise.Repositories
         { 
             _dbSession = dBSession;
         }
-        public Task<Customer> GetCustomerByIDAsync(short id)
+        public async Task<Customer?> GetCustomerByIDAsync(short id)
         {
-            throw new NotImplementedException();
+            using var dbConnection = _dbSession.Connection;
+            var query = @"SELECT * FROM Customers WHERE ID = @Id";
+            Customer? customer = await dbConnection.QuerySingleOrDefaultAsync<Customer>(query, new {Id = id});
+            return customer;
         }
 
         public async Task<List<Customer>> GetCustomersAsync()

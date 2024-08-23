@@ -1,7 +1,11 @@
+using Azure.Core;
+using FluentValidation.Results;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using WebApplicationExercise.DTO.Customers;
 using WebApplicationExercise.DTO.Orders;
 using WebApplicationExercise.Requests.Orders;
+using WebApplicationExercise.Validators;
 
 namespace WebApplicationExercise.Controllers.Orders
 {
@@ -45,7 +49,12 @@ namespace WebApplicationExercise.Controllers.Orders
         [HttpPost]
         public async Task<IActionResult> SaveOrder(OrderDTO orderDTO)
         {
-            return Created("", await _mediator.Send(new SaveOrderRequest { OrderDTO = orderDTO }));
+            SaveOrderValidator validator = new SaveOrderValidator(_mediator);
+            ValidationResult results = await validator.ValidateAsync(orderDTO);
+            
+            if (results.IsValid)
+                return Created("", await _mediator.Send(new SaveOrderRequest { OrderDTO = orderDTO }));
+            throw new BadHttpRequestException(results.ToString());
         }
     }
 }

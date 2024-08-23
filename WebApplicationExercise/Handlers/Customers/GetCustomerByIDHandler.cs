@@ -3,23 +3,19 @@ using WebApplicationExercise.Data;
 using WebApplicationExercise.Repositories.Customers;
 using WebApplicationExercise.Requests.Customers;
 
-
 namespace WebApplicationExercise.Handlers.Customers
 {
-    public class SaveCustomerHandler : IRequestHandler<SaveCustomerRequest, Customer>
+    public class GetCustomerByIDHandler : IRequestHandler<GetCustomerByIDRequest, Customer>
     {
         private readonly ICustomerRepository _customerRepository;
-
-        public SaveCustomerHandler(ICustomerRepository customerRepository)
+        public GetCustomerByIDHandler(ICustomerRepository customerRepository)
         {
-
             _customerRepository = customerRepository;
         }
 
-        public Task<Customer> Handle(SaveCustomerRequest request, CancellationToken cancellationToken)
+        public Task<Customer> Handle(GetCustomerByIDRequest request, CancellationToken cancellationToken)
         {
-            return _customerRepository.SaveCustomerAsync(request.CustomerDTO);    
-
+            return _customerRepository.GetCustomerByIDAsync(request.ID);
         }
     }
 }

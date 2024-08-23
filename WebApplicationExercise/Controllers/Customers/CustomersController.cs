@@ -1,7 +1,10 @@
-﻿using MediatR;
+﻿using Azure.Core;
+using FluentValidation.Results;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using WebApplicationExercise.DTO.Customers;
 using WebApplicationExercise.Requests.Customers;
+using WebApplicationExercise.Validators;
 
 namespace WebApplicationExercise.Controllers.Customers
 {
@@ -28,7 +31,11 @@ namespace WebApplicationExercise.Controllers.Customers
         [Route("")]
         public async Task<IActionResult> SaveCustomer(CustomerDTO customerDTO)
         {
-            return Ok(await _mediator.Send(new SaveCustomerRequest { CustomerDTO = customerDTO }));
+            SaveCustomerValidator validator = new SaveCustomerValidator();
+            ValidationResult results = validator.Validate(customerDTO);
+            if (results.IsValid)
+                return Ok(await _mediator.Send(new SaveCustomerRequest { CustomerDTO = customerDTO }));
+            throw new BadHttpRequestException(results.ToString());
         }
     }
 }

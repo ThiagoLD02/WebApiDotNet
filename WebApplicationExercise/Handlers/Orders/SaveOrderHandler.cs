@@ -2,6 +2,7 @@
 using WebApplicationExercise.Data;
 using WebApplicationExercise.Repositories.Orders;
 using WebApplicationExercise.Requests.Orders;
+using WebApplicationExercise.Validators;
 
 namespace WebApplicationExercise.Handlers
 {
@@ -16,6 +17,7 @@ namespace WebApplicationExercise.Handlers
 
         Task<Order> IRequestHandler<SaveOrderRequest, Order>.Handle(SaveOrderRequest request, CancellationToken cancellationToken)
         {
+
             return _orderRepository.SaveOrderAsync(request.OrderDTO);
         }
     }
