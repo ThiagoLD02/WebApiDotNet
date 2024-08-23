@@ -18,18 +18,10 @@ namespace WebApplicationExercise.Validators
             
             RuleFor(x => x.ProductName).NotEmpty().WithMessage("ProductName is empty.");
 
-            RuleFor(x => x.CustomerID)
-                .NotEmpty().WithMessage("CustomerID is empty.")
-                .MustAsync( async (CustomerID, cancellation) => await UserExists(CustomerID))
-                .WithMessage("No customer found with this CustomerID");
+            RuleFor(x => x.CustomerID).SetValidator(new CustomerIDValidator(_mediator));
 
 
         }
 
-        private async Task<bool> UserExists(short id)
-        {
-            var customer = await _mediator.Send(new GetCustomerByIDRequest { ID = id });
-            return customer != null;
-        }
     }
 }

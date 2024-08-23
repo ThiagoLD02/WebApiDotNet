@@ -31,7 +31,11 @@ namespace WebApplicationExercise.Controllers.Orders
         [HttpGet("CustomerID/{id}")]
         public async Task<IActionResult> GetOrdersByCustomerID(short id)
         {
-            return Ok(await _mediator.Send(new GetOrdersByCustomerIDRequest { Id = id }));
+            CustomerIDValidator validator = new CustomerIDValidator(_mediator);
+            ValidationResult result = await validator.ValidateAsync(id);
+            if(result.IsValid)
+                return Ok(await _mediator.Send(new GetOrdersByCustomerIDRequest { Id = id }));
+            throw new BadHttpRequestException(result.ToString());
         }
 
         [HttpGet("With-user-name")]
