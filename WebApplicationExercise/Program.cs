@@ -1,8 +1,8 @@
+using FluentValidation.AspNetCore;
 using WebApplicationExercise.Data;
 using WebApplicationExercise.Repositories;
 using WebApplicationExercise.Repositories.Customers;
 using WebApplicationExercise.Repositories.Orders;
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -18,6 +18,8 @@ builder.Services.AddTransient<IOrderRepository, OrderRepository>();
 builder.Services.AddMediatR(cfg => {
     cfg.RegisterServicesFromAssembly(typeof(Program).Assembly);
 });
+builder.Services.AddFluentValidationAutoValidation().AddFluentValidationClientsideAdapters();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
